@@ -27,7 +27,7 @@ module "cluster" {
   location            = var.location
   node_locations      = ["us-central1-a", "us-central1-b"]
   network             = module.vpc_network.network
-  subnetwork          = module.vpc_network.public_subnetwork  // Utilize the `public` subnetwork allow outbound internet access.
+  subnetwork          = module.vpc_network.public_subnetwork  // Use the `public` subnetwork allow outbound internet access.
   cluster_autoscaling = {
     enabled = true,
     resource_limits = [
