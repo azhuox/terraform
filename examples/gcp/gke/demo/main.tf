@@ -11,7 +11,7 @@ module "vpc_network" {
   secondary_cidr_block = "10.69.0.0/16"
 }
 
-# Use a random suffix to prevent overlap in network names
+// Use a random suffix to prevent overlap in network names
 resource "random_string" "suffix" {
   length  = 4
   special = false
