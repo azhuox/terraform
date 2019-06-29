@@ -93,8 +93,12 @@ resource "google_container_node_pool" "primary" {
       }
     }
 
-    workload_metadata_config {
-      node_metadata = var.workload_metadata_config.node_metadata
+    dynamic "workload_metadata_config" {
+      iterator = config
+      for_each = var.workload_metadata_config
+      content {
+        node_metadata = config.value.node_metadata
+      }
     }
   }
 }

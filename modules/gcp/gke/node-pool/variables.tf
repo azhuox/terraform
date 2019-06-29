@@ -222,12 +222,24 @@ variable "taints" {
 }
 
 variable "workload_metadata_config" {
-  description = "The metadata configuration to expose to workloads on the node pool"
-  type = object({
+  description = <<EOF
+    The metadata configuration to expose to workloads on the node pool.
+    This variable is supposed to be an object but I make it a list of the object in order to utilize dynamic blocks to generate the config.
+    Please note that you should only provide ONE item in the list.
+    ## Example Config ##
+    workload_metadata_config = [
+      {
+        node_metadata = "node_metadata_example"
+      }
+    ]
+  EOF
+
+  type = list(
+  object({
     node_metadata = string
   })
-  default = {
-    node_metadata = "UNSPECIFIED"
-  }
+  )
+
+  default = []
 }
 //--------------------------------------------------------------------------------

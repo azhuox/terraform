@@ -149,7 +149,7 @@ variable "services_ipv4_cidr_block" {
 variable "create_subnetwork" {
   description = "Whether to automatically new subnetwork for the cluster."
   type = bool
-  default = false
+  default = null
 }
 
 variable "subnetwork_name" {

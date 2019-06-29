@@ -28,6 +28,8 @@ module "cluster" {
   node_locations      = ["us-central1-a", "us-central1-b"]
   network             = module.vpc_network.network
   subnetwork          = module.vpc_network.public_subnetwork  // Use the `public` subnetwork allow outbound internet access.
+  cluster_secondary_range_name = module.vpc_network.public_subnetwork_secondary_range_name
+  services_secondary_range_name = module.vpc_network.public_subnetwork_secondary_range_name
   cluster_autoscaling = {
     enabled = true,
     resource_limits = [
@@ -46,7 +48,7 @@ module "cluster" {
   resource_labels    = {resource1 = "cpu", resource2 = "memory"}
 }
 
-// Use the template to create a node pool for the above cluster.
+// Use the template to create the second node pool for the above cluster.
 module "default_node_pool" {
   source              = "../../../../modules/gcp/gke/node-pool"
   project_id          = var.project_id
@@ -55,18 +57,31 @@ module "default_node_pool" {
   location            = "us-central1"
   machine_type        = "n1-standard-1"
   labels              = {type = "default-node-pool"}
-  tags                = ["test-cluster", "default-node-pool"]
+  tags                = ["gke-cluster-demo", "default-node-pool"]
+  initial_node_count  = 1 // Per zone
+  autoscaling         = [{min_node_count = 1, max_node_count = 2}]  // Per zone
+}
+
+// Use the template to create another node pool for the above cluster.
+module "second_node_pool" {
+  source              = "../../../../modules/gcp/gke/node-pool"
+  project_id          = var.project_id
+  cluster_name        = module.cluster.name
+  name                = "second-node-pool"
+  location            = "us-central1"
+  machine_type        = "n1-standard-1"
+  labels              = {type = "second-node-pool"}
+  tags                = ["gke-cluster-demo", "second-node-pool"]
   initial_node_count  = 1 // Per zone
   autoscaling         = [{min_node_count = 1, max_node_count = 3}]  // Per zone
   taints              = [
     {
       key = "node-type"
-      value = "default-node-pool"
+      value = "second-node-pool"
       effect = "PREFER_NO_SCHEDULE"
     }
   ]
 }
-
 
 // You can configure a google cloud storage bucket fore storing terraform states.
 // Check this doc for more details: https://www.terraform.io/docs/backends/types/gcs.html
