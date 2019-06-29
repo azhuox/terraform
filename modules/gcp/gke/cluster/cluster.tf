@@ -14,7 +14,7 @@
 //   subnetwork
 
 terraform {
-  # This template can only work with terraform 0.12 or later.
+  // This template can only work with terraform 0.12 or later.
   required_version = ">= 0.12"
 }
 

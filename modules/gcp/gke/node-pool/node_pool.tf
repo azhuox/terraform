@@ -9,6 +9,11 @@
 //   name
 //   location
 
+terraform {
+  // This template can only work with terraform 0.12 or later.
+  required_version = ">= 0.12"
+}
+
 // google-beta provider is used in order to enable the beta settings.
 provider "google-beta" {
   project = var.project_id

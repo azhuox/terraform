@@ -10,4 +10,7 @@ This repo includes the following folders:
 
 * [examples](https://github.com/azhuox/terraform/tree/master/examples): This folder contains examples of how to use the modules defined in the `modules` folder.
 
+## Prerequisites
+
+All the modules in this repo require terraform >= 0.12. You can go to [this page](https://www.terraform.io/downloads.html) for downloading & installing terraform or check [this doc](https://www.terraform.io/upgrade-guides/0-12.html) for details about how to upgrade terraform to 0.12.
 
